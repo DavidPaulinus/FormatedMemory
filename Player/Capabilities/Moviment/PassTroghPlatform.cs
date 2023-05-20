@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PassTroghPlatform : MonoBehaviour
 {
+    [SerializeField] private float disableTimer;
     [SerializeField] private LayerMask layer;
     [SerializeField] private InputController input;
 
@@ -11,8 +12,6 @@ public class PassTroghPlatform : MonoBehaviour
     private BoxCollider2D box;
     private Ground ground;
 
-    [SerializeField] private float disableTimer;
-    private bool jump;
     private float down;
     private float disableCounter = 0;
 
@@ -21,12 +20,12 @@ public class PassTroghPlatform : MonoBehaviour
         ground = GetComponent<Ground>();
         box = GetComponent<BoxCollider2D>();
         edge = GetComponent<EdgeCollider2D>();
+
     }
 
     void Update()
     {
         down = input.retriveHoldingDown();
-        jump |= input.retriveJUmp();
 
         if (disableCounter > 0)
         {
@@ -37,7 +36,7 @@ public class PassTroghPlatform : MonoBehaviour
             box.enabled = true;
             edge.enabled = true;
         }
-        if (ground.Grounded(box, layer) && down == -1 && jump && disableCounter <= 0)
+        if (ground.Grounded(box, layer) && down == -1 && disableCounter <= 0)
         {
             box.enabled = false;
             edge.enabled = false;

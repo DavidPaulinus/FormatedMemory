@@ -33,4 +33,5 @@ public class Move : MonoBehaviour
         body.velocity = new Vector2(x * _velocity , body.velocity.y);
 
     }
+
 }

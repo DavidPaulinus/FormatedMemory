@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,7 +11,7 @@ public class AttackPlayerState : State
     private Transform trans;
     private CheckPlayerDistance checkDistance;
 
-    void Start()
+    void Awake()
     {
         trans = GetComponent<Transform>();
         checkDistance = GetComponentInParent<CheckPlayerDistance>();
@@ -25,5 +26,4 @@ public class AttackPlayerState : State
         }
         return this;
     }
-
 }

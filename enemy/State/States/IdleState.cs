@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class IdleState : State
 {
-    [SerializeField] private float maxDistanceChase;
-    [SerializeField] private ChaseState chase;
+    [SerializeField] private float maxDistanceToNextState;
+    [SerializeField] private State nextState;
 
     private Transform trans;
     private CheckPlayerDistance checkDistance;
@@ -18,16 +18,14 @@ public class IdleState : State
 
     public override State RunCurrentState()
     {
-        if (checkDistance.CheckDistance(trans, maxDistanceChase))
-        {
-            return chase;
-        }
+        if (checkDistance.CheckDistance(trans, maxDistanceToNextState)) return nextState;
+
         return this;
     }
 
     public float getMaxDistance()
     {
-        return maxDistanceChase;
+        return maxDistanceToNextState;
     }
 
 }
