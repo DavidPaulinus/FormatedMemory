@@ -7,11 +7,17 @@ public class WaitState : State
     [SerializeField] private State nextState;
     [SerializeField] private float time;
 
+    private float counter;
+
+    private void Awake()
+    {
+        counter = time;
+    }
     public override State RunCurrentState()
     {
-        if (time <= 0) return nextState;
+        if (counter <= 0) return nextState;
 
-        time -= Time.deltaTime;
+        counter -= Time.deltaTime;
 
         return this;
     }

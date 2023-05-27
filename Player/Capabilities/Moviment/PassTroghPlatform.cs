@@ -5,43 +5,43 @@ using UnityEngine;
 public class PassTroghPlatform : MonoBehaviour
 {
     [SerializeField] private float disableTimer;
-    [SerializeField] private LayerMask layer;
-    [SerializeField] private InputController input;
+    [SerializeField] private BoxCollider2D playerCollision;
 
-    private EdgeCollider2D edge;
-    private BoxCollider2D box;
-    private Ground ground;
-
-    private float down;
-    private float disableCounter = 0;
-
-    private void Awake()
-    {
-        ground = GetComponent<Ground>();
-        box = GetComponent<BoxCollider2D>();
-        edge = GetComponent<EdgeCollider2D>();
-
-    }
-
+    private GameObject currentPassablePlatform;
+    
     void Update()
     {
-        down = input.retriveHoldingDown();
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            if (currentPassablePlatform != null)
+            {
+                StartCoroutine(DisableCollision());
+            }
+        }
+    }
 
-        if (disableCounter > 0)
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("PassableGround"))
         {
-            disableCounter -= Time.deltaTime;
+            currentPassablePlatform = collision.gameObject;
         }
-        if (disableCounter <= 0)
-        {
-            box.enabled = true;
-            edge.enabled = true;
-        }
-        if (ground.Grounded(box, layer) && down == -1 && disableCounter <= 0)
-        {
-            box.enabled = false;
-            edge.enabled = false;
+    }
 
-            disableCounter = disableTimer;
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("PassableGround"))
+        {
+            currentPassablePlatform = null;
         }
+    }
+
+    private IEnumerator DisableCollision()
+    {
+        var _platformCollider = currentPassablePlatform.GetComponent<BoxCollider2D>();
+
+        Physics2D.IgnoreCollision(playerCollision, _platformCollider, true);
+        yield return new WaitForSeconds(disableTimer);
+        Physics2D.IgnoreCollision(playerCollision, _platformCollider, false);
     }
 }

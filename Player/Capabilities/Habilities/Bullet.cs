@@ -6,7 +6,6 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     [Header("Bullet config")]
-    [SerializeField] private Transform player;
     [SerializeField] private SpriteRenderer spr;
 
     [Header("Bullet data")]
@@ -28,8 +27,8 @@ public class Bullet : MonoBehaviour
         if (collision.gameObject.CompareTag("Damageable"))
         {
             Damageable dm = collision.gameObject.GetComponent<Status>();
-            dm.doDamage(damage);
-
+            dm.doDamage(damage, 0.5f, 2, false);
+            Destroy(gameObject);
         }
 
         if (collision.gameObject.CompareTag("Ground")) Destroy(gameObject);
